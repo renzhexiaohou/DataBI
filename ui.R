@@ -10,6 +10,8 @@
 library(shiny)
 library(plotly)
 
+py <- plotly(username="rAPI", key="yu680v5eii", base_url="https://plot.ly")
+
 source("plotlyGraphWidget.R")
 
 # Define UI for application that draws a histogram
