@@ -31,7 +31,7 @@ tmp <- read.csv("Demographics-REFMAL628_20.csv") %>%
 
 
 # Define server logic required to draw a histogram
-shinyServer(function(input, output) {
+shinyServer(function(input, output, session) {
 
 
 final <- readRDS("PlotTrend.rds") %>% filter(drug %in% c("生物制品", "化学药物"))
