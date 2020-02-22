@@ -30,6 +30,6 @@ shinyUI(fluidPage(
         # mainPanel(
         #     plotOutput("distPlot")
         # ),
-        mainPanel(plotlyOutput("demography"))
+        mainPanel(graphOutput("demography"))
     )
 ))
