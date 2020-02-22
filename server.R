@@ -28,6 +28,12 @@ tmp <- read.csv("Demographics-REFMAL628_20.csv") %>%
 
 
 
+
+
+# Define server logic required to draw a histogram
+shinyServer(function(input, output) {
+
+
 final <- readRDS("PlotTrend.rds") %>% filter(drug %in% c("生物制品", "化学药物"))
 
 Year <- summary(final$dt) %>% names()
@@ -47,25 +53,7 @@ data <- tibble(Year, PH1num, PH2num, PH3num)
 cPH1num <- '#246a99'
 cPH2num <- '#2e88c5'
 cPH3num <- '#85c1e9'
-# cPH1num <- '4285F4'
-# cPH2num <- 'FBBC05'
-# cPH3num <- 'EA4335'
-
-
-
-# Define server logic required to draw a histogram
-shinyServer(function(input, output) {
-
-    output$distPlot <- renderPlot({
-
-        # generate bins based on input$bins from ui.R
-        x    <- faithful[, 2]
-        bins <- seq(min(x), max(x), length.out = input$bins + 1)
-
-        # draw the histogram with the specified number of bins
-        hist(x, breaks = bins, col = 'darkgray', border = 'white')
-
-    })
+   
     
     output$demography <- renderGraph({
         plot_ly(data, x = ~Year) %>%
