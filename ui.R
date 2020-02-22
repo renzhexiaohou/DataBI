@@ -10,6 +10,17 @@
 library(shiny)
 library(plotly)
 
+#Output Graph Function
+graphOutput <- function(inputId, width="100%", height="550px") {
+    tagList(
+        singleton(tags$head(
+            tags$script(src="plotlyGraphWidget.js")
+        )),
+        tags$iframe(id=inputId, src="https://plot.ly/~playground/7.embed",
+                    class="graphs", style="border:none;", seamless=TRUE, width=width, height=height)
+    )
+}
+
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
 
