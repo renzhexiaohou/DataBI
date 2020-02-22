@@ -61,7 +61,7 @@ shinyServer(function(input, output) {
 
     })
     
-    output$demography <- renderPlotly({
+    output$demography <- renderGraph({
         p <- plot_ly(data, x = ~Year) %>%
             add_trace(y = ~PH1num, name = 'I',type = "bar",
                       text = ~PH1num, textposition = 'inside',
