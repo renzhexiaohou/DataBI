@@ -19,7 +19,6 @@ library(PKNCA)
 #This script is necessary in the app folder
 #but the user should not have to edit it
 
-py <- plotly(username="rAPI", key="yu680v5eii", base_url="https://plot.ly")
 
 source("plotlyGraphWidget.R")
 
