@@ -20,6 +20,7 @@ library(PKNCA)
 #but the user should not have to edit it
 
 
+source("plotlyGraphWidget.R")
 
 # input --------------------------------------------------------------------
 tmp <- read.csv("Demographics-REFMAL628_20.csv") %>% 
@@ -67,7 +68,7 @@ shinyServer(function(input, output) {
     })
     
     output$demography <- renderGraph({
-        p <- plot_ly(data, x = ~Year) %>%
+        plot_ly(data, x = ~Year) %>%
             add_trace(y = ~PH1num, name = 'I',type = "bar",
                       text = ~PH1num, textposition = 'inside',
                       marker = list(color = cPH1num, opacity=0.9)) %>% 
@@ -80,8 +81,6 @@ shinyServer(function(input, output) {
             # add_text(textfont = t, textposition = "top center") %>%
             layout(yaxis = list(title = 'Count'), barmode = 'stack',
                    xaxis = list(title = "", tickangle = -45))
-        
-        p
     })
 
 })
