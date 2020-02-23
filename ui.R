@@ -72,6 +72,6 @@ shinyUI(fluidPage(
         # mainPanel(
         #     plotOutput("distPlot")
         # ),
-        mainPanel(renderGraph("demography"))
+        mainPanel(plotlyOutput("demography"))
     )
 ))
