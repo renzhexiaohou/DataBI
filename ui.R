@@ -7,8 +7,14 @@
 #    http://shiny.rstudio.com/
 #
 
+
 library(shiny)
 library(plotly)
+library(ggplot2)
+library(dplyr)
+library(tibble)
+library(stringr)
+
 
 #This script is necessary in the app folder
 #but the user should not have to edit it
