@@ -14,6 +14,8 @@ library(stringr)
 library(ggplot2)
 # library(plotly)
 # library(PKNCA)
+library(DT)
+library(data.table)
 
 source("global.R")
 
@@ -30,7 +32,7 @@ shinyServer(function(input, output) {
     # 
     # })
     
-    output$ae_tab <- DT::renderDT(
+    output$ae_tab <- renderDT(
         {Ae},
         options = list(
             lengthMenu = list(c(5, 10, 15, -1), 
@@ -49,7 +51,7 @@ shinyServer(function(input, output) {
           $("td:eq(3)", row).css("color", "#0080ff")}')
         )
     )
-    output$dm_tab <- DT::renderDT(
+    output$dm_tab <- renderDT(
         {Dm},
         options = list(
             lengthMenu = list(c(5, 10, 15, -1), 
