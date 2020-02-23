@@ -23,7 +23,7 @@ shinyUI(fluidPage(
     # Application title
     # Sidebar with a slider input for number of bins
     h3("adverse events"),
-    div(DT::DTOutput("ae_tab")),
+    div(DTOutput("ae_tab")),
     h3("demographics"),
-    div(DT::DTOutput("dm_tab"))
+    div(DTOutput("dm_tab"))
 ))
