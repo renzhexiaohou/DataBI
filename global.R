@@ -3,6 +3,6 @@
 library(plotly)
 library(shiny)
 
-py <- plotly(username="rAPI", key="yu680v5eii", base_url="https://plot.ly")
+py <- plot_ly(username="renzhexiaohou", key="nkBfzdgq9Ag7iFS1sSGc", base_url="https://plot.ly")
 
 source("plotlyGraphWidget.R")
