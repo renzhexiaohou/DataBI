@@ -15,7 +15,7 @@ library(ggplot2)
 library(dplyr)
 library(tibble)
 library(stringr)
-library(PKNCA)
+
 
 #This script is necessary in the app folder
 #but the user should not have to edit it
