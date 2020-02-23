@@ -14,6 +14,8 @@ library(stringr)
 library(ggplot2)
 # library(plotly)
 # library(PKNCA)
+library(DT)
+library(data.table)
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
