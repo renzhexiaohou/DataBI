@@ -15,7 +15,7 @@ library(ggplot2)
 # library(plotly)
 # library(PKNCA)
 
-# source("global.R")
+source("global.R")
 
 # input --------------------------------------------------------------------
 # tmp <- read.csv("Demographics-REFMAL628_20.csv") %>% 
