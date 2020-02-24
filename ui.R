@@ -125,8 +125,8 @@ shinyUI(
                                 # 模拟数据呈现  ----------------------------------------
                                 # titlePanel(h3(strong("模拟数据"))),
                                 titlePanel(h3(strong("Data"))),
-                                div( dataTableOutput("ae_tab")),
-                                div( dataTableOutput("dm_tab"))
+                                div( tableOutput("ae_tab")),
+                                div( tableOutput("dm_tab"))
                          )
                      ),
                      absolutePanel(
