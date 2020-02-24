@@ -30,43 +30,50 @@ shinyServer(function(input, output) {
     # 
     # })
     
-    output$ae_tab <- DT::renderDT(
-        {Ae},
-        options = list(
-            lengthMenu = list(c(5, 10, 15, -1), 
-                              c('5', '10', '15', 'All')),
-            pageLength = 5,
-            pagingType = "simple_numbers",
-            # autoWidth = TRUE,
-            scrollX = TRUE,
-            rowCallback = DT::JS(
-                'function(row, data) {
-          if(parseFloat(data[3]) >= 5.0 | parseFloat(data[3]) <= 1.0)
-          $("td:eq(3)", row).css("font-weight", "bold");
-          if (parseFloat(data[3]) >= 5.0)
-          $("td:eq(3)", row).css("color", "red");
-          if (parseFloat(data[3]) <= 1.0)
-          $("td:eq(3)", row).css("color", "#0080ff")}')
-        )
-    )
-    output$dm_tab <- DT::renderDT(
-        {Dm},
-        options = list(
-            lengthMenu = list(c(5, 10, 15, -1), 
-                              c('5', '10', '15', 'All')),
-            pageLength = 5,
-            pagingType = "simple_numbers",
-            # autoWidth = TRUE,
-            scrollX = TRUE,
-            rowCallback = DT::JS(
-                'function(row, data) {
-          if(parseFloat(data[3]) >= 5.0 | parseFloat(data[3]) <= 1.0)
-          $("td:eq(3)", row).css("font-weight", "bold");
-          if (parseFloat(data[3]) >= 5.0)
-          $("td:eq(3)", row).css("color", "red");
-          if (parseFloat(data[3]) <= 1.0)
-          $("td:eq(3)", row).css("color", "#0080ff")}')
-        )
-    )
+    # output$ae_tab <- DT::renderDT(
+    #     {Ae},
+    #     options = list(
+    #         lengthMenu = list(c(5, 10, 15, -1), 
+    #                           c('5', '10', '15', 'All')),
+    #         pageLength = 5,
+    #         pagingType = "simple_numbers",
+    #         # autoWidth = TRUE,
+    #         scrollX = TRUE,
+    #         rowCallback = DT::JS(
+    #             'function(row, data) {
+    #       if(parseFloat(data[3]) >= 5.0 | parseFloat(data[3]) <= 1.0)
+    #       $("td:eq(3)", row).css("font-weight", "bold");
+    #       if (parseFloat(data[3]) >= 5.0)
+    #       $("td:eq(3)", row).css("color", "red");
+    #       if (parseFloat(data[3]) <= 1.0)
+    #       $("td:eq(3)", row).css("color", "#0080ff")}')
+    #     )
+    # )
+    # output$dm_tab <- DT::renderDT(
+    #     {Dm},
+    #     options = list(
+    #         lengthMenu = list(c(5, 10, 15, -1), 
+    #                           c('5', '10', '15', 'All')),
+    #         pageLength = 5,
+    #         pagingType = "simple_numbers",
+    #         # autoWidth = TRUE,
+    #         scrollX = TRUE,
+    #         rowCallback = DT::JS(
+    #             'function(row, data) {
+    #       if(parseFloat(data[3]) >= 5.0 | parseFloat(data[3]) <= 1.0)
+    #       $("td:eq(3)", row).css("font-weight", "bold");
+    #       if (parseFloat(data[3]) >= 5.0)
+    #       $("td:eq(3)", row).css("color", "red");
+    #       if (parseFloat(data[3]) <= 1.0)
+    #       $("td:eq(3)", row).css("color", "#0080ff")}')
+    #     )
+    # )
+    
+    output$ae_tab <- renderDataTable ({
+        Ae
+    })
+    output$dm_tab <- renderDataTable ({
+        Dm
+    })
 
 })
