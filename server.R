@@ -69,10 +69,10 @@ shinyServer(function(input, output) {
     #     )
     # )
     
-    output$ae_tab <- renderDataTable ({
+    output$ae_tab <- renderTable({
         Ae
     })
-    output$dm_tab <- renderDataTable ({
+    output$dm_tab <- renderTable({
         Dm
     })
 
