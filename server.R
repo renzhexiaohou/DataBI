@@ -12,68 +12,60 @@ library(dplyr)
 library(tibble)
 library(stringr)
 library(ggplot2)
-# library(plotly)
 # library(PKNCA)
-
-# source("global.R")
-
-# input --------------------------------------------------------------------
-# tmp <- read.csv("Demographics-REFMAL628_20.csv") %>% 
-#     mutate(group = as.character(Subject))
 
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
+    
 
-    # output$distPlot <- renderPlot({
-    # 
-    # 
+    output$ae_tab <- renderTable ({
+        Ae %>% filter(Subject %in% input$ID)
+    })
+    
+    output$id_plot <- renderPlot({
+        ggplot(filter(He, Subject %in% input$ID), aes(x = as.numeric(ANC), y = as.numeric(PLAT))) +
+            geom_point() +
+            theme_bw(base_size = 15)
+    })
+
+    output$dm_tab <- DT::renderDT(
+        {Dm},
+        options = list(
+            lengthMenu = list(c(5, 10, 15, -1),
+                              c('5', '10', '15', 'All')),
+            pageLength = 5,
+            pagingType = "simple_numbers",
+            # autoWidth = TRUE,
+            scrollX = TRUE,
+            rowCallback = DT::JS(
+                'function(row, data) {
+          if(parseFloat(data[3]) >= 5.0 | parseFloat(data[3]) <= 1.0)
+          $("td:eq(3)", row).css("font-weight", "bold");
+          if (parseFloat(data[3]) >= 5.0)
+          $("td:eq(3)", row).css("color", "red");
+          if (parseFloat(data[3]) <= 1.0)
+          $("td:eq(3)", row).css("color", "#0080ff")}')
+        )
+    )
+    
+    # output$dm_tab <- renderTable ({
+    #     Dm %>% filter(Subject %in% input$ID)
     # })
-    
-    # output$ae_tab <- DT::renderDT(
-    #     {Ae},
-    #     options = list(
-    #         lengthMenu = list(c(5, 10, 15, -1), 
-    #                           c('5', '10', '15', 'All')),
-    #         pageLength = 5,
-    #         pagingType = "simple_numbers",
-    #         # autoWidth = TRUE,
-    #         scrollX = TRUE,
-    #         rowCallback = DT::JS(
-    #             'function(row, data) {
-    #       if(parseFloat(data[3]) >= 5.0 | parseFloat(data[3]) <= 1.0)
-    #       $("td:eq(3)", row).css("font-weight", "bold");
-    #       if (parseFloat(data[3]) >= 5.0)
-    #       $("td:eq(3)", row).css("color", "red");
-    #       if (parseFloat(data[3]) <= 1.0)
-    #       $("td:eq(3)", row).css("color", "#0080ff")}')
-    #     )
-    # )
-    # output$dm_tab <- DT::renderDT(
-    #     {Dm},
-    #     options = list(
-    #         lengthMenu = list(c(5, 10, 15, -1), 
-    #                           c('5', '10', '15', 'All')),
-    #         pageLength = 5,
-    #         pagingType = "simple_numbers",
-    #         # autoWidth = TRUE,
-    #         scrollX = TRUE,
-    #         rowCallback = DT::JS(
-    #             'function(row, data) {
-    #       if(parseFloat(data[3]) >= 5.0 | parseFloat(data[3]) <= 1.0)
-    #       $("td:eq(3)", row).css("font-weight", "bold");
-    #       if (parseFloat(data[3]) >= 5.0)
-    #       $("td:eq(3)", row).css("color", "red");
-    #       if (parseFloat(data[3]) <= 1.0)
-    #       $("td:eq(3)", row).css("color", "#0080ff")}')
-    #     )
-    # )
-    
-    output$ae_tab <- renderTable({
-        Ae
-    })
-    output$dm_tab <- renderTable({
-        Dm
+
+
+    output$he_tab <- renderTable ({
+        He %>% filter(Subject %in% input$ID)
     })
 
+
+    output$ch_tab <- renderTable ({
+        Ch %>% filter(Subject %in% input$ID)
+    })
+
+
+    output$tl_tab <- renderTable ({
+        Tl %>% filter(Subject %in% input$ID)
+    })
+    
 })
