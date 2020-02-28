@@ -3,10 +3,6 @@ library(dplyr)
 library(tibble)
 library(stringr)
 
-library(readr)
-library(readxl)
-library(writexl)
-
 library(ggplot2)
 
 dm <- read.csv("Demographics-REFMAL628_20.csv", stringsAsFactors = FALSE)
