@@ -23,130 +23,113 @@ shinyUI(
         theme = shinytheme("flatly"),
         tags$head(tags$link(rel = "stylesheet", type = "text/css", href = "mystyle.css")),
         navbarPage(
-            title = ("JAB3312 Real-Time Dose Finding"),
-            
-            # first page: description -------------------------------------------------
-            tabPanel("Study Design",
-                     h3(strong("Reference")),
-                     hr(),
-                     h4(HTML("<strong><body  style='color:#000000;background-color:#ffffff'>Understanding variability with voriconazole using a population pharmacokinetic approach: implications for optimal dosing</body></strong>")),
-                     h5(HTML("<strong style='color:#000000'>Objectives:</strong> Voriconazole exhibits highly variable, non-linear pharmacokinetics and is associated with a narrow therapeutic range. This study aimed to investigate the population pharmacokinetics of voriconazole in adults, including the effect of CYP2C19 genotype and drug-drug interactions.")),
-                     img(src="pkmodelstr.png",height = 150),
-                     br(),
-                     h3(strong("Note")),
-                     hr(),
-                     h4("* For practice only ~"),
-                     img(src="renzhexiaohou_logo.png", height = 150)
-            ),
-            
-            # second page: simulation -------------------------------------------------
-            tabPanel("Data Overview",
-                     fluidRow(
-                         column(4,
-                                # style = "background: #ffffff",
-                                titlePanel(h3(strong("Parameters"))),
-                                # hr(),
-                                wellPanel(
+            title = ("DRUGX real-time dose finding"),
 
-                                    # h6("* PK参数及协变量默认值基于参考文献")
-                                    h6("* Based on published reference.")
-                                ),
-                                # 给药方案的设定 ------------------------------------------
-                                # titlePanel(h3(strong("给药方案"))),
-                                titlePanel(h3(strong("Treatment"))),
-                                wellPanel(
-                                    style = "background: #ededed",
-                                    fluidRow(
-                                        # column(3, numericInput("timepoint0", "医嘱时间", value = 0, min = 0, step = 1)),
-                                        # column(3, numericInput("dosage0", "剂量 (mg)", value = 400, min = 0, step = 100)),
-                                        # column(3, numericInput("interval0", "间隔", value = 12, min = 0, step = 2)),
-                                        # column(3, numericInput("times0", "次数", value = 6, min = 1, step = 1)),
-                                        column(3, numericInput("timepoint0", "Time (h)", value = 0, min = 0, step = 1)),
-                                        column(3, numericInput("dosage0", "Dose (mg)", value = 400, min = 0, step = 100)),
-                                        column(3, numericInput("interval0", "Interval (h)", value = 12, min = 0, step = 2)),
-                                        column(3, numericInput("times0", "N", value = 6, min = 1, step = 1)),
-                                        tags$div(id = 'placeholder')
-                                    ),
-                                    wellPanel(style='background: #ededed; padding:0px;',
-                                              fluidRow(style='background: #ededed; padding:0px;',
-                                                       column(9,style='background: #ededed; padding:0px;',
-                                                              wellPanel(style='background: #ededed; padding:0px;',
-                                                                        column(4, style='background: #ededed; padding:14px;',
-                                                                               # h5(strong("观测时间"))
-                                                                               h5(strong("ObsTime"))
-                                                                        ),
-                                                                        column(8,style='background: #ededed; padding:4px;',
-                                                                               # tags$style(type = "text/css", ".irs-slider {width: 20px; height: 20px; top: 15px;}"),
-                                                                               uiOutput("sliderOBSTIME", inline = T)
-                                                                        )
-                                                              )
-                                                       ),
-                                                       column(3,style='background: #ededed; padding:0px;',
-                                                              wellPanel(style='background: #ededed;',
-                                                                        column(6,style='background: #ededed; padding:1px;', 
-                                                                               actionButton('insertBtn', NULL, width = "85%",
-                                                                                            icon = icon(":O", class = "glyphicon glyphicon-plus"),
-                                                                                            style='padding:5px;
-                                                                                  color: white; background-color: #ec4c3c;
-                                                                                  border-width: 0px;
-                                                                                  font-size:70%')), 
-                                                                        column(6, style='background: #ededed; padding:1px;',
-                                                                               actionButton('removeBtn', NULL, width = "85%",
-                                                                                            icon = icon(":X", class = "glyphicon glyphicon-minus"),
-                                                                                            style='padding:5px;
-                                                                                  color: white; background-color: #3498db;
-                                                                                  border-width: 0px;
-                                                                                  font-size:70%'))
-                                                              )
-                                                       )
-                                                       # actionButton('steadystate', NULL, width = "0%",
-                                                       #              icon = icon(":X", class = "glyphicon glyphicon-minus"),
-                                                       #              style='padding:5px;
-                                                       #              color: white; background-color: #3498db;
-                                                       #              border-width: 0px;
-                                                       #              font-size:70%')
-                                              )
-                                    ),
-                                    # h6("* 给药剂量默认值为说明书推荐日剂量"),
-                                    # hr(),
-                                    # titlePanel(h5(strong("浓度范围 (mg/L)"))),
-                                    titlePanel(h5(strong("Concentration range (mg/L)"))),
-                                    sliderInput("concrange", label = NULL, min = 0, max = 10, step = 0.1, value = c(1,5)),
-                                    # h6("* 根据临床指南，建议伏立康唑的治疗窗为1-5mg/L")
-                                    h6("* Recommended concentration range in 1-5mg/L.")
-                                )
-                         ),
-                         column(8,
-                                # 药时曲线呈现  ----------------------------------------
-                                # titlePanel(h3(strong("药时曲线"))),
-                                titlePanel(h3(strong("Conc-Time Curve"))),
-                                br(),
-                                plotOutput(outputId = "pkconcplot1"),
-                                # 模拟数据呈现  ----------------------------------------
-                                # titlePanel(h3(strong("模拟数据"))),
-                                titlePanel(h3(strong("Data"))),
-                                div( tableOutput("ae_tab")),
-                                div( tableOutput("dm_tab"))
-                         )
+# Study design ------------------------------------------------------------
+
+            tabPanel("Study design",
+                     fluidRow(
+                         column(5, 
+                     h3(strong("DRUGX-1001 (US FIH)")),
+                     hr(),
+                     h4(HTML("<strong><body  style='color:#000000;background-color:#ffffff'> A Phase 1, Multi-Center, Open-Label Study to Evaluate the Safety, Tolerability, Pharmacokinetics, and Preliminary Evidence of Antitumor Activity of DRUGX in Adult Patients with Advanced Solid Tumors </body></strong>")),
+                     h5(HTML("<strong style='color:#000000'>Primary Objective:</strong> To determine the MTD and/or RP2D and assess the DLT of DRUGX as a single agent when administered orally to adult subjects with advanced solid tumors.")),
+                     h5(HTML("<strong style='color:#000000'>Secondary Objectives:</strong> To characterize the safety and tolerability of DRUGX; To determine the PK profiles of DRUGX after a single dose and at steady state after multiple doses; To evaluate the ORR, PFS, and DOR as preliminary evidence of antitumor activity of DrugX treatment as determined by the RECIST v1.1 applied by the Investigator at each site.")),
+                     h5(HTML("<strong style='color:#000000'>Exploratory Objectives:</strong> To evaluate the ORR PFS, and DOR as determined by iRECIST as assessed applied by Investigator review of DRUGX. To explore immunological biomarkers in tumor tissue and blood that predict treatment response and resistance. To investigate a panel of molecular biomarkers (genomic, metabolic) that may be predictive of clinical response or resistance, safety, MOA, and PDx activity."))
                      ),
-                     absolutePanel(
-                         top = 105, right = 306, width = 160, height = 10, draggable = FALSE,
-                         titlePanel(h5(strong("Range")))
-                     ),
-                     absolutePanel(
-                         top = 105, right = 248, width = 160, height = 10, draggable = FALSE,
-                         uiOutput("sliderAUC", inline = T)
-                     ),
-                     absolutePanel(
-                         top = 123, right = 8, width = 220, height = 10, draggable = FALSE,
-                         HTML(paste0("<strong>AUC<sub>", textOutput(outputId = "auclower", inline = T), "-",
-                                     textOutput(outputId = "aucupper", inline = T), "hr</sub> = <code style='color:#ec4c3c;background-color:#F8F9F9'>",
-                                     textOutput(outputId = "pkauc1", inline = T), "</code> hr*mg/L</strong>"))
+                     br(),
+                     br(),
+                     br(),
+                     column(7,
+                            img(src="StudyDesign.png", align = "bottom", height = 350)
+                            )
                      )
             ),
             
-            # footer = h6("Copyright 2019 上海强世信息科技有限公司", align = "right")
-            footer = h6("Copyright 2019 renzhexiaohou", align = "right")
+
+# Data visualization ------------------------------------------------------
+
+            tabPanel("Data monitoring",
+                     h4(textInput(inputId = "ID", label = "Subject ID", value = NULL, placeholder = "100002")),
+                     fluidRow(
+                         h4("Demographics"),
+                         column(4, DT::dataTableOutput("dm_tab")),
+                         # column(4, tableOutput("dm_tab")),
+                         column(8, plotOutput("id_plot"))
+                     ),
+                     fluidRow(
+                         h4("Adeverse events"),
+                         column(4, tableOutput("ae_tab")),
+                         column(8, plotOutput(NULL))
+                     ),
+                     fluidRow(
+                         h4("ID"),
+                         column(4, tableOutput("he_tab")),
+                         column(8, plotOutput(NULL))
+                     ),
+                     fluidRow(
+                         h4("ID"),
+                         column(4, tableOutput("ch_tab")),
+                         column(8, plotOutput(NULL))
+                     ),
+                     fluidRow(
+                         h4("ID"),
+                         column(4, tableOutput("tl_tab")),
+                         column(8, plotOutput(NULL))
+                     )
+            ),
+
+
+# Modeling and simulation -------------------------------------------------
+
+            tabPanel("Modeling and simulation"
+                
+            ),
+
+
+# Who we are ? ------------------------------------------------------------
+
+            tabPanel("Who we are ?",
+                         fluidRow(
+                             column(5,
+                                    h3(HTML("<strong style='color:#ec4c3c;background-color:#F8F9F9'> EDCP </strong> Capability")),
+                                    hr(),
+                                    h4(HTML("<strong><body  style='color:#000000;background-color:#ffffff'> Innovative trial </body></strong>")),
+                                    h5(HTML("<strong style='color:#000000'> - </strong> opimal early phase study design: FIH, POM, POC ")),
+                                    h4(HTML("<strong><body  style='color:#000000;background-color:#ffffff'> Clinical pharmacology </body></strong>")),
+                                    h5(HTML("<strong style='color:#000000'> - </strong> BA/BE, FE, DDI, mass balance, special populations, QTc")),
+                                    h4(HTML("<strong><body  style='color:#000000;background-color:#ffffff'> PK/PD calculation and analysis </body></strong>")),
+                                    h5(HTML("<strong style='color:#000000'> - </strong> NCA, exploratory PK/PD relationship analysis")),
+                                    h4(HTML("<strong><body  style='color:#000000;background-color:#ffffff'> PK/PD modeling and simulation </body></strong>")),
+                                    h5(HTML("<strong style='color:#000000'> - </strong> translational PKPD for safety and efficacy dose")),
+                                    h5(HTML("<strong style='color:#000000'> - </strong> clinical PKPD for dose rationale on RP2D, RP3D")),
+                                    h5(HTML("<strong style='color:#000000'> - </strong> covariates analysis, optimal sampling, pediatric extrapolation")),
+                                    h3("  "),
+                                    h4(HTML("<strong><body  style='color:#000000;background-color:#ffffff'> Strategic consultation </body></strong>")),
+                                    h5(HTML("<strong style='color:#000000'> - </strong> CDP/TPP, bridging strategy, ethnic sensitivity assessment"))
+                                    
+                             ),
+                             column(7,
+                                    img(src="EDCP.png",height = 440)
+                             )
+
+                         )
+                     # br(),
+                     # h3(strong("Note")),
+                     # hr(),
+                     # h4("* For practice only ~"),
+                     # img(src="renzhexiaohou_logo.png", height = 150)
+                     # absolutePanel(
+                     #     top = 100, left = 55, width = 100, height = 10, draggable = TRUE,
+                     #     img(src="LOGOdMed.png", height = 50)
+                     # )
+            ),
+            
+            footer = h5(HTML("dMed Copyright 2020 : 
+                       <strong style='color:#ec4c3c;background-color:#F8F9F9'> E </strong>
+                       arly <strong style='color:#ec4c3c;background-color:#F8F9F9'> D </strong> evelepment and 
+                       <strong style='color:#ec4c3c;background-color:#F8F9F9'> C </strong> linical 
+                       <strong style='color:#ec4c3c;background-color:#F8F9F9'> P </strong>harmacology"), align = "right")
         )
     )
 )
