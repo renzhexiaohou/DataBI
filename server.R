@@ -497,7 +497,7 @@ shinyServer(function(input, output, session) {
                       input$gamma_anc, 
                       input$mtt_anc)
         # obstimes <- c(seq(0, 600, 1)/100, seq(6, (max(dosing()$time) + 72)*10, 1)/10)
-        obstimes <- seq(0, (max(dosing()$time) + 72)*100, 1)/100
+        obstimes <- seq(0, (max(dosing()$time) + 72)*10, 1)/10
         pkconc <- pksim(data = dosing(),
                         func = pkdes,
                         parms = pkparams,
