@@ -447,7 +447,7 @@ shinyServer(function(input, output, session) {
         KCIRCa = KTRa
         
         
-        dy[7] = KPROLa*y[7]*(1-EFFECTAa)*(y[7]/y[11])**GAMMAa - KTRa*y[7]
+        dy[7] = KPROLa*y[7]*(1-EFFECTAa)*(CIRC0a/y[11])**GAMMAa - KTRa*y[7]
         dy[8] = KTRa*y[7] - KTRa*y[8]
         dy[9] = KTRa*y[8] - KTRa*y[9]
         dy[10] = KTRa*y[9] - KTRa*y[10]
@@ -495,9 +495,10 @@ shinyServer(function(input, output, session) {
                       input$hill_perk,
                       input$slope_anc,
                       input$gamma_anc, 
-                      input$mtt_anc)
-        # obstimes <- c(seq(0, 600, 1)/100, seq(6, (max(dosing()$time) + 72)*10, 1)/10)
-        obstimes <- seq(0, (max(dosing()$time) + 72)*10, 1)/10
+                      input$mtt_anc,
+                      input$circ0_anc)
+        # obstimes <- seq(0, (max(dosing()$time) + 72)*10, 1)/10
+        obstimes <- unique(c(seq(0, 6*100, 1)/100, seq(60, (max(24) + 72)*10, 1)/10))
         pkconc <- pksim(data = dosing(),
                         func = pkdes,
                         parms = pkparams,
