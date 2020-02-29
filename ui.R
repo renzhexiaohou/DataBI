@@ -204,74 +204,85 @@ shinyUI(
                 hr(),
                 
                 fluidRow(
-                    titlePanel(h3(strong("Tumor Growth Curve"))),
-                    plotOutput(outputId = "tumor_plot")
+                    column(4,
+                           titlePanel(h3(strong("Tumor Growth Curve"))),
+                           plotOutput(outputId = "tumor_plot")                           
+                    ),
+                    column(4,
+                           titlePanel(h3(strong("pERK-Conc Curve"))),
+                           plotOutput(outputId = "perk_plot")
+                    ),
+                    column(4,
+                           titlePanel(h3(strong("ANC-Time Curve"))),
+                           plotOutput(outputId = "anc_plot")
+                    )
                 ),
+                
                 fluidRow(
-                    column(2,
-                           sliderInput("emax_tumor", label = "EMAX", min = 0.0001, max = 0.01, step = 0.0001, value = c(0.0069))),
-                    column(2,
-                           sliderInput("ec50_tumor", label = "EC50 (ng/mL)", min = 1, max = 200, step = 0.1, value = c(56.4))),
-                    column(2,
-                           sliderInput("lamda0_tumor", label = "Lambda0", min = 0.0001, max = 0.01, step = 0.0001, value = c(0.0041))),
-                    column(2,
-                           sliderInput("w0_tumor", label = "W0 (mm^3)", min = 1, max = 200, step = 10, value = c(100))),
-                    column(2,
-                           sliderInput("frac_tumor", label = "Frac", min = 0.01, max = 1, step = 0.001, value = c(0.098)))
-                ),
+                    column(4,
+                           column(12,
+                           fluidRow(
+                               column(4,
+                                      sliderInput("emax_tumor", label = "EMAX", min = 0.0001, max = 0.01, step = 0.0001, value = c(0.0069))),
+                               column(4,
+                                      sliderInput("ec50_tumor", label = "EC50 (ng/mL)", min = 1, max = 200, step = 0.1, value = c(56.4))),
+                               column(4,
+                                      sliderInput("lamda0_tumor", label = "Lambda0", min = 0.0001, max = 0.01, step = 0.0001, value = c(0.0041)))
+                           ),
+                           fluidRow(
+                               column(4,
+                                      sliderInput("w0_tumor", label = "W0 (mm^3)", min = 1, max = 200, step = 10, value = c(100))),
+                               column(4,
+                                      sliderInput("frac_tumor", label = "Frac", min = 0.01, max = 1, step = 0.001, value = c(0.098)))
+                           )
+                           )
+                    ),
+                    column(4,
+                           column(12,
+                           fluidRow(
+                               column(4,
+                                      sliderInput("emax_perk", label = "EMAX", min = 0.1, max = 1, step = 0.05, value = c(1))),
+                               column(4,
+                                      sliderInput("ec50_perk", label = "EC50 (ng/mL)", min = 1, max = 100, step = 0.1, value = c(11.1))),
+                               column(4,
+                                      sliderInput("hill_perk", label = "Hill", min = 1, max = 5, step = 0.1, value = c(1))
+                               )
+                           )
+                           )
+                    ),
+                    column(4,
+                           column(12,
+                                  fluidRow(
+                                      column(6,
+                                             sliderInput("slope_anc", label = "Slope", min = 0.0001, max = 0.01, step = 0.00005, value = c(0.0026))),
+                                      column(6,
+                                             sliderInput("circ0_anc", label = "Circ0 (*10^9)", min = 1, max = 10, step = 0.1, value = c(5)))
+                                  ),
+                                  fluidRow(
+                                      column(6,
+                                             sliderInput("gamma_anc", label = "Gamma", min = 0.001, max = 1, step = 0.001, value = c(0.122))),
+                                      column(6,
+                                             sliderInput("mtt_anc", label = "MTT (h)", min = 50, max = 200, step = 5, value = c(125)))
+                                  )
+                                  )
+                    )
+                    ),
                 absolutePanel(
-                    top = 120, left = 200, width = 80, height = 10, draggable = TRUE,
+                    top = 180, right = 50, width = 80, height = 10, draggable = TRUE,
                     HTML(
                         paste0("<strong>TGI<sub>", "", "</sub> = <code style='color:#ec4c3c;background-color:#F8F9F9'>",
                                textOutput(outputId = "tgi", inline = T), "</code> %</strong>")
                     )
                 ),
-                
-                
-                br(),
-                hr(),
-                
-                fluidRow(
-                    titlePanel(h3(strong("pERK-Conc Curve"))),
-                    plotOutput(outputId = "perk_plot")
-                ),
-                fluidRow(
-                    column(2,
-                           sliderInput("emax_biomarker", label = "EMAX", min = 0.1, max = 1, step = 0.05, value = c(1))),
-                    column(2,
-                           sliderInput("ec50_biomarker", label = "EC50 (ng/mL)", min = 1, max = 100, step = 1, value = c(20))),
-                    column(2,
-                           sliderInput("hill_biomarker", label = "Hill", min = 1, max = 5, step = 0.1, value = c(1))
-                    )
-                ),
                 absolutePanel(
-                    top = 120, left = 320, width = 130, height = 10, draggable = TRUE,
+                    top = 210, right = 50, width = 120, height = 10, draggable = TRUE,
                     HTML(
-                        paste0("<strong>Inhibition<sub>", "", "</sub> = <code style='color:#ec4c3c;background-color:#F8F9F9'>",
-                               textOutput(outputId = "inhi", inline = T), "</code> %</strong>")
+                        paste0("<strong>pERK inhi<sub>", "", "</sub> = <code style='color:#ec4c3c;background-color:#F8F9F9'>",
+                               textOutput(outputId = "perk", inline = T), "</code> %</strong>")
                     )
                 ),
-                
-                
-                br(),
-                hr(),
-                
-                fluidRow(
-                    titlePanel(h3(strong("ANC-Time Curve"))),
-                    plotOutput(outputId = "anc_plot")
-                ),
-                fluidRow(
-                    column(2,
-                           sliderInput("slope_anc", label = "Slope", min = 0.0001, max = 0.01, step = 0.00005, value = c(0.0039))),
-                    column(2,
-                           sliderInput("circ0_anc", label = "Circ0 (*10^9)", min = 1, max = 10, step = 0.1, value = c(5))),
-                    column(2,
-                           sliderInput("gamma_anc", label = "Gamma", min = 0.001, max = 1, step = 0.001, value = c(0.122))),
-                    column(2,
-                           sliderInput("mtt_anc", label = "MTT (h)", min = 50, max = 200, step = 5, value = c(125)))
-                ),
                 absolutePanel(
-                    top = 180, left = 615, width = 170, height = 10, draggable = TRUE,
+                    top = 240, right = 40, width = 160, height = 10, draggable = TRUE,
                     HTML(
                         paste0("<strong>ANC nadir<sub>", "", "</sub> = <code style='color:#ec4c3c;background-color:#F8F9F9'>",
                                textOutput(outputId = "nadir", inline = T), "</code> *10^9</strong>")

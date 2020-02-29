@@ -490,13 +490,14 @@ shinyServer(function(input, output, session) {
                       input$emax_tumor,
                       input$ec50_tumor,
                       input$lamda0_tumor,
-                      input$emax_biomarker,
-                      input$ec50_biomarker,
-                      input$hill_biomarker,
+                      input$emax_perk,
+                      input$ec50_perk,
+                      input$hill_perk,
                       input$slope_anc,
                       input$gamma_anc, 
                       input$mtt_anc)
-        obstimes <- seq(0, (max(dosing()$time) + 72)*10, 1)/10
+        # obstimes <- c(seq(0, 600, 1)/100, seq(6, (max(dosing()$time) + 72)*10, 1)/10)
+        obstimes <- seq(0, (max(dosing()$time) + 72)*100, 1)/100
         pkconc <- pksim(data = dosing(),
                         func = pkdes,
                         parms = pkparams,
@@ -506,7 +507,7 @@ shinyServer(function(input, output, session) {
                         fract = input$frac_tumor,
                         circ0a = input$circ0_anc) %>% 
             mutate(conc = 1000*y2/input$vc_pk,
-                   inhi = input$emax_biomarker*conc**input$hill_biomarker / (input$ec50_biomarker + conc**input$hill_biomarker),
+                   inhi = input$emax_perk*conc**input$hill_perk / (input$ec50_perk**input$hill_perk + conc**input$hill_perk),
                    anc = y11) %>% 
             select(time, dose, conc, y1, y2, y3, y4, y5, y6, inhi,
                    y7, y8, y9, y10, y11, anc)
@@ -656,6 +657,8 @@ shinyServer(function(input, output, session) {
         pk <- reac$PKCONC %>% 
             filter(time <= max(reac$PKCONC$time)-72)
         
+        tgi60 <- max(pk$y6) - (max(pk$y6)-input$w0_tumor)*0.6
+        
         ggplot(pk) +
             # geom_point(size = 2) +
             geom_line(data=pk, 
@@ -663,8 +666,10 @@ shinyServer(function(input, output, session) {
                       linetype = "solid", size =1) +
             geom_line(data=pk, 
                       aes(x = time/24+1, y = y6, group="2"), 
-                      linetype = "dashed", colour ="#9898fb", alpha=1, size =1) +
+                      linetype = "dashed", colour ="red", alpha=0.5, size =1) +
+            geom_hline(aes(yintercept = tgi60), linetype = "dashed", colour ="#9898fb", alpha=1, size =1) +
             scale_x_continuous(breaks = seq(1, 7*1000, 7)) +
+            # scale_y_continuous(breaks = seq(0, 100*1000, 100), limits = c(0, 1500)) +
             theme_bw(base_rect_size = 1) +
             theme(axis.text = element_text(size = 15),
                   axis.title = element_text(size = 16),
@@ -673,15 +678,15 @@ shinyServer(function(input, output, session) {
             xlab("Norminal Day") + ylab("Tumor Size (mm^3)")
     })
     
-    
-    output$inhi <- renderText({
+
+    output$perk <- renderText({
         
         pk <- reac$PKCONC %>% 
             filter(time <= max(reac$PKCONC$time)-72)        
         
-        eff <- max(pk$inhi)
+        eff <- last(pk$inhi)
             
-        round(abs(max(pk$inhi)) * 100, digits = 0)
+        round(abs(eff) * 100, digits = 0)
     })
     output$perk_plot <- renderPlot({
         # browser()
@@ -691,14 +696,16 @@ shinyServer(function(input, output, session) {
         ggplot(pk) +
             # geom_point(size = 2) +
             geom_line(data=pk, 
-                      aes(x = conc, y = inhi, group="1"), 
+                      aes(x = conc, y = inhi*100, group="1"), 
                       linetype = "solid", size =1) +
+            geom_hline(aes(yintercept = 80), linetype = "dashed", colour ="#9898fb", alpha=1, size =1) +
+            scale_y_continuous(breaks = seq(0, 100, 20), limits = c(0, 100)) +
             theme_bw(base_rect_size = 1) +
             theme(axis.text = element_text(size = 15),
                   axis.title = element_text(size = 16),
                   axis.title.x = element_text(margin = unit(c(5, 0, 0, 0), "mm")),
                   axis.title.y = element_text(margin = unit(c(0, 5, 0, 0), "mm"))) +
-            xlab("Concentration (ng/mL)") + ylab("pERK inhibition (%)")
+            xlab("Plasma Concentration (ng/mL)") + ylab("pERK inhibition (%)")
     })
     
     output$nadir <- renderText({
@@ -709,7 +716,7 @@ shinyServer(function(input, output, session) {
         
         nadir <- min(pk$anc)
         
-        round(nadir, digits = 2)
+        round(nadir, digits = 1)
         
     })
     output$anc_plot <- renderPlot({
@@ -722,7 +729,9 @@ shinyServer(function(input, output, session) {
             geom_line(data=pk, 
                       aes(x = time/24+1, y = anc, group="1"), 
                       linetype = "solid", size =1) +
+            geom_hline(aes(yintercept = 1), linetype = "dashed", colour ="red", alpha=0.5, size =1) +
             scale_x_continuous(breaks = seq(1, 7*1000, 7)) +
+            scale_y_continuous(breaks = seq(0, 10, 2), limits = c(0, 10)) +
             theme_bw(base_rect_size = 1) +
             theme(axis.text = element_text(size = 15),
                   axis.title = element_text(size = 16),
